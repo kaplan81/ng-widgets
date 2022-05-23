@@ -1,1 +1,7 @@
-<video #video autoplay></video>
+<div class="camera" [class.visible]="isPlaying$ | async">
+  <video #video [ngStyle]="style"></video>
+  <input type="checkbox" (change)="blur = !blur" />
+  <label>BLUR</label>
+  <!-- <input type="checkbox" (change)="another expreession" />
+  <label>ANOTHER LABEL</label> -->
+</div>
