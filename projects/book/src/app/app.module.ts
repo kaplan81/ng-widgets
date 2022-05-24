@@ -6,15 +6,21 @@ import { AppComponent } from './app.component';
 import { CameraComponent } from './camera/camera.component';
 
 @NgModule({
+  /**
+   * @error
+   * Error: The selector "bkc-camera" did not match any elements
+   * Because we are not loading it in index.html
+   */
+  // bootstrap: [CameraComponent],
   declarations: [AppComponent, CameraComponent],
   imports: [BrowserModule, AppRoutingModule],
-  providers: [],
-  bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private injector: Injector) {
+  constructor(private injector: Injector) {}
+
+  ngDoBootstrap() {
     const cameraComponent: NgElementConstructor<CameraComponent> =
-      createCustomElement(CameraComponent, { injector });
+      createCustomElement(CameraComponent, { injector: this.injector });
     customElements.define('bkc-camera', cameraComponent);
   }
 }
