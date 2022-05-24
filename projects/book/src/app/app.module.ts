@@ -2,7 +2,6 @@ import { Injector, NgModule } from '@angular/core';
 import { createCustomElement, NgElementConstructor } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { CameraComponent } from './camera/camera.component';
 
 @NgModule({
@@ -11,8 +10,7 @@ import { CameraComponent } from './camera/camera.component';
    * Error: The selector "bkc-camera" did not match any elements
    * Because we are not loading it in index.html
    */
-  // bootstrap: [CameraComponent],
-  declarations: [AppComponent, CameraComponent],
+  declarations: [CameraComponent],
   imports: [BrowserModule, AppRoutingModule],
 })
 export class AppModule {
