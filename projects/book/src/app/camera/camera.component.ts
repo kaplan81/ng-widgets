@@ -1,3 +1,4 @@
+import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import {
   AfterViewInit,
   Component,
@@ -7,17 +8,52 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+/**
+ * @example
+ * <bkc-camera blur></bkc-camera>
+ *
+ * @todo
+ * style properties in an objects and then ngFor
+ */
 @Component({
   selector: 'bkc-camera',
   templateUrl: './camera.component.html',
   styleUrls: ['./camera.component.scss'],
 })
 export class CameraComponent implements AfterViewInit {
-  @Input() blur = false;
-  @Input() invert = false;
-  @Input() flip = false;
-  @Input() sepia = false;
+  #blur = false;
+  #invert = false;
+  #flip = false;
+  #sepia = false;
+  @Input()
+  get blur() {
+    return this.#blur;
+  }
+  set blur(value: BooleanInput) {
+    this.#blur = coerceBooleanProperty(value);
+  }
+  @Input()
+  get invert() {
+    return this.#invert;
+  }
+  set invert(value: BooleanInput) {
+    this.#invert = coerceBooleanProperty(value);
+  }
+  @Input()
+  get flip() {
+    return this.#flip;
+  }
+  set flip(value: BooleanInput) {
+    this.#flip = coerceBooleanProperty(value);
+  }
   isPlaying$ = new BehaviorSubject<boolean>(false);
+  @Input()
+  get sepia() {
+    return this.#sepia;
+  }
+  set sepia(value: BooleanInput) {
+    this.#sepia = coerceBooleanProperty(value);
+  }
   @ViewChild('video') video: ElementRef | null = null;
   videoEl: HTMLVideoElement | null = null;
 

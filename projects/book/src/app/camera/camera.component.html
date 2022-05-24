@@ -1,11 +1,11 @@
 <div class="camera" [class.visible]="isPlaying$ | async">
   <video #video [ngStyle]="style"></video>
-  <input type="checkbox" (change)="blur = !blur" />
+  <input type="checkbox" checked="blur" (change)="blur = !blur" />
   <label>BLUR</label>
-  <input type="checkbox" (change)="invert = !invert" />
+  <input type="checkbox" checked="invert" (change)="invert = !invert" />
   <label>INVERT</label>
-  <input type="checkbox" (change)="flip = !flip" />
+  <input type="checkbox" checked="flip" (change)="flip = !flip" />
   <label>FLIP</label>
-  <input type="checkbox" (change)="sepia = !sepia" />
+  <input type="checkbox" checked="sepia" (change)="sepia = !sepia" />
   <label>SEPIA</label>
 </div>
