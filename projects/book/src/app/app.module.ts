@@ -1,6 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Injector, NgModule } from '@angular/core';
 import { createCustomElement, NgElementConstructor } from '@angular/elements';
-import { BrowserModule } from '@angular/platform-browser';
 import { CameraComponent } from './camera/camera.component';
 
 @NgModule({
@@ -10,7 +10,7 @@ import { CameraComponent } from './camera/camera.component';
    * Because we are not loading it in index.html
    */
   declarations: [CameraComponent],
-  imports: [BrowserModule],
+  imports: [CommonModule],
 })
 export class AppModule {
   constructor(private injector: Injector) {}
