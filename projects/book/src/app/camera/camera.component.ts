@@ -4,9 +4,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Injector,
   Input,
   ViewChild,
 } from '@angular/core';
+import { createCustomElement, NgElementConstructor } from '@angular/elements';
 import { BehaviorSubject } from 'rxjs';
 
 /**
@@ -60,6 +62,16 @@ export class CameraComponent implements AfterViewInit {
   }
   @ViewChild('video') video: ElementRef | null = null;
   videoEl: HTMLVideoElement | null = null;
+
+  constructor(private injector: Injector) {
+    // @todo move to a global const so that we can use it in the @Component selector, too.
+    const customElTag = 'bkc-camera';
+    if (!customElements.get('the-element')) {
+      const cameraComponent: NgElementConstructor<CameraComponent> =
+        createCustomElement(CameraComponent, { injector });
+      customElements.define('bkc-camera', cameraComponent);
+    }
+  }
 
   ngAfterViewInit(): void {
     if (this.video !== null) {
