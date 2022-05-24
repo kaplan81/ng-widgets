@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -7,7 +13,10 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./camera.component.scss'],
 })
 export class CameraComponent implements AfterViewInit {
-  blur = false;
+  @Input() blur = false;
+  @Input() invert = false;
+  @Input() flip = false;
+  @Input() sepia = false;
   isPlaying$ = new BehaviorSubject<boolean>(false);
   @ViewChild('video') video: ElementRef | null = null;
   videoEl: HTMLVideoElement | null = null;
@@ -31,11 +40,22 @@ export class CameraComponent implements AfterViewInit {
 
   get style() {
     let filter = '';
+    let transform = '';
     if (this.blur) {
       filter += 'blur(5px)';
     }
+    if (this.invert) {
+      filter += 'invert(1)';
+    }
+    if (this.flip) {
+      transform += 'scaleX(-1)';
+    }
+    if (this.sepia) {
+      filter += 'sepia(50%)';
+    }
     return {
       filter,
+      transform,
     };
   }
 }
