@@ -1,4 +1,5 @@
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -16,7 +17,10 @@ import { BehaviorSubject } from 'rxjs';
  * style properties in an objects and then ngFor
  */
 @Component({
+  // Without CommonModule it does not build.
+  imports: [CommonModule],
   selector: 'bkc-camera',
+  standalone: true,
   templateUrl: './camera.component.html',
   styleUrls: ['./camera.component.scss'],
 })
