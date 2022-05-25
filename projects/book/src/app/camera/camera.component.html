@@ -1,10 +1,12 @@
 <div class="camera" [class.visible]="isPlaying$ | async">
   <video #video [ngStyle]="style"></video>
-  <bkc-camera-filter-input
-    *ngFor="let videoFilter of videoFiltersIterable"
-    [videoFilterId]="videoFilter.id"
-    [videoFilters]="videoFilters"
-    (toggleCheck)="toggleChecked($event)"
-    >{{ videoFilter.label | uppercase }}</bkc-camera-filter-input
-  >
+  <div class="camera__filters">
+    <bkc-camera-filter-input
+      *ngFor="let videoFilter of videoFiltersIterable"
+      [videoFilterId]="videoFilter.id"
+      [videoFilters]="videoFilters"
+      (toggleCheck)="toggleChecked($event)"
+      >{{ videoFilter.label | uppercase }}</bkc-camera-filter-input
+    >
+  </div>
 </div>
