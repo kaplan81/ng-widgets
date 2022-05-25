@@ -8,4 +8,5 @@ export interface VideoFiltered {
 export interface VideoFilter {
   checked: boolean;
   id: number;
+  label: string;
 }

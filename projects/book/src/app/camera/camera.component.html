@@ -1,11 +1,10 @@
 <div class="camera" [class.visible]="isPlaying$ | async">
   <video #video [ngStyle]="style"></video>
-  <input type="checkbox" [checked]="isChecked(1)" (change)="toggleChecked(1)" />
-  <label>BLUR</label>
-  <input type="checkbox" [checked]="isChecked(2)" (change)="toggleChecked(2)" />
-  <label>INVERT</label>
-  <input type="checkbox" [checked]="isChecked(3)" (change)="toggleChecked(3)" />
-  <label>FLIP</label>
-  <input type="checkbox" [checked]="isChecked(4)" (change)="toggleChecked(4)" />
-  <label>SEPIA</label>
+  <bkc-camera-filter-input
+    *ngFor="let videoFilter of videoFiltersIterable"
+    [videoFilterId]="videoFilter.id"
+    [videoFilters]="videoFilters"
+    (toggleCheck)="toggleChecked($event)"
+    >{{ videoFilter.label | uppercase }}</bkc-camera-filter-input
+  >
 </div>

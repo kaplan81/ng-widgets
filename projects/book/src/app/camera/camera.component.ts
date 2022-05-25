@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { CameraFilterInputComponent } from '../camera-filter-input/camera-filter-input.component';
 import { VideoFilter, VideoFiltered } from '../video.model';
 
 /**
@@ -11,8 +18,9 @@ import { VideoFilter, VideoFiltered } from '../video.model';
  * style properties in an objects and then ngFor
  */
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   // Without CommonModule it does not build.
-  imports: [CommonModule],
+  imports: [CommonModule, CameraFilterInputComponent],
   selector: 'bkc-camera',
   standalone: true,
   templateUrl: './camera.component.html',
@@ -23,18 +31,22 @@ export class CameraComponent implements AfterViewInit {
     blur: {
       checked: false,
       id: 1,
+      label: 'blur',
     },
     invert: {
       checked: false,
       id: 2,
+      label: 'invert',
     },
     flip: {
       checked: false,
       id: 3,
+      label: 'flip',
     },
     sepia: {
       checked: false,
       id: 4,
+      label: 'sepia',
     },
   };
   isPlaying$ = new BehaviorSubject<boolean>(false);
@@ -46,14 +58,9 @@ export class CameraComponent implements AfterViewInit {
   }
   @ViewChild('video') video: ElementRef | null = null;
   videoEl: HTMLVideoElement | null = null;
-
-  isChecked(filterId: number): boolean {
-    const filter: VideoFilter | undefined = this.getFilter(filterId);
-    if (filter !== undefined) {
-      return filter.checked;
-    }
-    return false;
-  }
+  videoFiltersIterable: VideoFilter[] = Object.entries(this.videoFilters).map(
+    (videoFilteredEntry: [string, VideoFilter]) => videoFilteredEntry[1]
+  );
 
   ngAfterViewInit(): void {
     if (this.video !== null) {
@@ -103,12 +110,11 @@ export class CameraComponent implements AfterViewInit {
     return;
   }
 
-  private getFilter(filterId: number): VideoFilter | undefined {
-    const filter: [string, VideoFilter] | undefined =
-      this.getFilterEntry(filterId);
-    return filter ? filter[1] : undefined;
-  }
-
+  /**
+   *
+   * @todo: repeated in projects/book/src/app/camera-filter-input/camera-filter-input.component.ts
+   * Migrate to ng service.
+   */
   private getFilterEntry(filterId: number): [string, VideoFilter] | undefined {
     return Object.entries(this.videoFilters).find(
       (videoFiltersEntry: [string, VideoFilter]) =>

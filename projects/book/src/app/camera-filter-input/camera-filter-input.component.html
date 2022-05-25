@@ -1,0 +1,6 @@
+<input
+  type="checkbox"
+  [checked]="isChecked(videoFilterId)"
+  (change)="toggleCheck.emit(videoFilterId)"
+/>
+<label><ng-content></ng-content></label>
