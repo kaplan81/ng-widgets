@@ -1,13 +1,7 @@
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CommonModule } from '@angular/common';
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { VideoFilter, VideoFiltered } from '../video.model';
 
 /**
  * @example
@@ -25,41 +19,41 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./camera.component.scss'],
 })
 export class CameraComponent implements AfterViewInit {
-  #blur = false;
-  #invert = false;
-  #flip = false;
-  #sepia = false;
-  @Input()
-  get blur() {
-    return this.#blur;
-  }
-  set blur(value: BooleanInput) {
-    this.#blur = coerceBooleanProperty(value);
-  }
-  @Input()
-  get invert() {
-    return this.#invert;
-  }
-  set invert(value: BooleanInput) {
-    this.#invert = coerceBooleanProperty(value);
-  }
-  @Input()
-  get flip() {
-    return this.#flip;
-  }
-  set flip(value: BooleanInput) {
-    this.#flip = coerceBooleanProperty(value);
-  }
+  #videoFilters: VideoFiltered = {
+    blur: {
+      checked: false,
+      id: 1,
+    },
+    invert: {
+      checked: false,
+      id: 2,
+    },
+    flip: {
+      checked: false,
+      id: 3,
+    },
+    sepia: {
+      checked: false,
+      id: 4,
+    },
+  };
   isPlaying$ = new BehaviorSubject<boolean>(false);
-  @Input()
-  get sepia() {
-    return this.#sepia;
+  get videoFilters(): VideoFiltered {
+    return this.#videoFilters;
   }
-  set sepia(value: BooleanInput) {
-    this.#sepia = coerceBooleanProperty(value);
+  set videoFilters(value: VideoFiltered) {
+    this.#videoFilters = value;
   }
   @ViewChild('video') video: ElementRef | null = null;
   videoEl: HTMLVideoElement | null = null;
+
+  isChecked(filterId: number): boolean {
+    const filter: VideoFilter | undefined = this.getFilter(filterId);
+    if (filter !== undefined) {
+      return filter.checked;
+    }
+    return false;
+  }
 
   ngAfterViewInit(): void {
     if (this.video !== null) {
@@ -78,24 +72,53 @@ export class CameraComponent implements AfterViewInit {
     }
   }
 
-  get style() {
+  get style(): { filter: string; transform: string } {
     let filter = '';
     let transform = '';
-    if (this.blur) {
+    if (this.videoFilters.blur.checked) {
       filter += 'blur(5px)';
     }
-    if (this.invert) {
+    if (this.videoFilters.invert.checked) {
       filter += 'invert(1)';
     }
-    if (this.flip) {
+    if (this.videoFilters.flip.checked) {
       transform += 'scaleX(-1)';
     }
-    if (this.sepia) {
+    if (this.videoFilters.sepia.checked) {
       filter += 'sepia(50%)';
     }
     return {
       filter,
       transform,
     };
+  }
+
+  toggleChecked(filterId: number): boolean | void {
+    const filterKey: keyof VideoFiltered | undefined =
+      this.getFilterKey(filterId);
+    if (filterKey !== undefined) {
+      return (this.videoFilters[filterKey].checked =
+        !this.videoFilters[filterKey].checked);
+    }
+    return;
+  }
+
+  private getFilter(filterId: number): VideoFilter | undefined {
+    const filter: [string, VideoFilter] | undefined =
+      this.getFilterEntry(filterId);
+    return filter ? filter[1] : undefined;
+  }
+
+  private getFilterEntry(filterId: number): [string, VideoFilter] | undefined {
+    return Object.entries(this.videoFilters).find(
+      (videoFiltersEntry: [string, VideoFilter]) =>
+        videoFiltersEntry[1].id === filterId
+    );
+  }
+
+  private getFilterKey(filterId: number): keyof VideoFiltered | undefined {
+    const filter: [string, VideoFilter] | undefined =
+      this.getFilterEntry(filterId);
+    return filter ? (filter[0] as keyof VideoFiltered) : undefined;
   }
 }
