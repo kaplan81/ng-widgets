@@ -116,10 +116,13 @@ export class CameraComponent implements AfterViewInit {
    * Migrate to ng service.
    */
   private getFilterEntry(filterId: number): [string, VideoFilter] | undefined {
-    return Object.entries(this.videoFilters).find(
-      (videoFiltersEntry: [string, VideoFilter]) =>
-        videoFiltersEntry[1].id === filterId
-    );
+    if (this.videoFilters != null) {
+      return Object.entries(this.videoFilters).find(
+        (videoFiltersEntry: [string, VideoFilter]) =>
+          videoFiltersEntry[1].id === filterId
+      );
+    }
+    return undefined;
   }
 
   private getFilterKey(filterId: number): keyof VideoFiltered | undefined {

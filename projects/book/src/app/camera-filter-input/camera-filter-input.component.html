@@ -2,7 +2,7 @@
   <input
     type="checkbox"
     [checked]="isChecked(videoFilterId)"
-    (change)="toggleCheck.emit(videoFilterId)"
+    (change)="toggleCheckEmit()"
   />
   <label><ng-content></ng-content></label>
 </div>

@@ -27,6 +27,16 @@ export class CameraFilterInputComponent {
     return false;
   }
 
+  /**
+   * @todo
+   * If we register this component as custom element it emits a JS CustomEvent
+   * instead of the value.
+   * We need to fix that.
+   */
+  toggleCheckEmit(): void {
+    this.toggleCheck.emit(this.videoFilterId);
+  }
+
   private getFilter(filterId: number): VideoFilter | undefined {
     const filter: [string, VideoFilter] | undefined =
       this.getFilterEntry(filterId);
@@ -34,9 +44,12 @@ export class CameraFilterInputComponent {
   }
 
   private getFilterEntry(filterId: number): [string, VideoFilter] | undefined {
-    return Object.entries(this.videoFilters).find(
-      (videoFiltersEntry: [string, VideoFilter]) =>
-        videoFiltersEntry[1].id === filterId
-    );
+    if (this.videoFilters != null) {
+      return Object.entries(this.videoFilters).find(
+        (videoFiltersEntry: [string, VideoFilter]) =>
+          videoFiltersEntry[1].id === filterId
+      );
+    }
+    return undefined;
   }
 }
